@@ -1,18 +1,19 @@
+#install redistributables if nec
+cd redist;
+
 #install vbox v5.2.18
-wget https://download.virtualbox.org/virtualbox/5.2.18/VirtualBox-5.2.18-124319-Linux_amd64.run
-sudo sh VirtualBox-5.2.18-124319-Linux_amd64.run
-rm -rf VirtualBox-5.2.18-124319-Linux_amd64.run
+which virtualbox || sudo sh VirtualBox-5.2.18-124319-Linux_amd64.run 
+which virtualbox && { echo "virtual box successfully installed"; rm -rf VirtualBox-5.2.18-124319-Linux_amd64.run } || { echo "virtual box wasnt installed. exiting"; exit 1 }
 
 #add dhcp nic for internal networking 
 vboxmanage dhcpserver add --netname forde_sct_intnet --ip 192.168.10.1 --netmask 255.255.0.0 --lowerip 192.168.10.2 --upperip 192.168.10.255 --enable
 
 #install vagrant for provisioning
-wget https://releases.hashicorp.com/vagrant/2.1.5/vagrant_2.1.5_linux_amd64.zip
 unzip vagrant_2.1.5_linux_amd64.zip
-sudo mv vagrant /usr/bin
-rm -rf vagrant_2.1.5_linux_amd64.zip
+sudo mv vagrant /usr/bin && { echo "vagrant successfully installed"; rm -rf vagrant_2.1.5_linux_amd64.zip } || { echo "vagrant wasnt installed. exiting"; exit 1 }
 
 #extract payload
+cd ..
 tar zxvf payload.tar.gz
 mkdir -p cn1 cn2 cn3 controller
 
